@@ -13,15 +13,13 @@ on:
 jobs:
 
   test:
-
     name: Pruebas de código y datos
-
     runs-on: ubuntu-latest
 
     steps:
 
       # ==========================================
-      # 1. Descargar el código
+      # 1. Descargar código
       # ==========================================
 
       - name: Checkout del repositorio
@@ -61,7 +59,7 @@ jobs:
 
 
       # ==========================================
-      # 5. Validar datos
+      # 5. Validar datos de referencia
       # ==========================================
 
       - name: Validar datos de referencia
@@ -105,23 +103,10 @@ jobs:
 
 
       # ==========================================
-      # 7. Ejecutar pruebas
+      # 7. Validar existencia del modelo
       # ==========================================
 
-      - name: Ejecutar pruebas automatizadas
-        run: |
-          if [ -d "tests" ]; then
-            pytest tests/
-          else
-            echo "No existe carpeta tests."
-            echo "Se continúa con las validaciones anteriores."
-          fi
-
-      # ==========================================
-      # 6. Validar modelo
-      # ==========================================
-
-     - name: Validar existencia del modelo
+      - name: Validar existencia del modelo
         run: |
           python - <<'PY'
           import os
@@ -137,6 +122,22 @@ jobs:
                   f"No se encontró el modelo: {model_path}"
               )
           PY
+
+
+      # ==========================================
+      # 8. Ejecutar pruebas automatizadas
+      # ==========================================
+
+      - name: Ejecutar pruebas automatizadas
+        run: |
+          if [ -d "tests" ]; then
+            pytest tests/
+          else
+            echo "No existe carpeta tests."
+            echo "Se continúa con las validaciones anteriores."
+          fi
+
+
   # ==========================================
   # JOB 2: VALIDACIÓN DE DOCKER
   # ==========================================
@@ -144,7 +145,6 @@ jobs:
   docker:
 
     name: Validar construcción Docker
-
     runs-on: ubuntu-latest
 
     needs: test
