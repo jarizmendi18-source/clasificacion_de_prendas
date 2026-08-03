@@ -55,3 +55,6 @@ mlflow.db
 # Modelos grandes
 *.h5
 *.pb
+
+# MLflow artifacts locales
+mlartifacts/
