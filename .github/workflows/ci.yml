@@ -117,7 +117,26 @@ jobs:
             echo "Se continúa con las validaciones anteriores."
           fi
 
+      # ==========================================
+      # 6. Validar modelo
+      # ==========================================
 
+     - name: Validar existencia del modelo
+        run: |
+          python - <<'PY'
+          import os
+
+          model_path = "modelo/modelo_prendas.keras"
+
+          if os.path.exists(model_path):
+              print("Modelo encontrado correctamente")
+              print(f"Ruta: {model_path}")
+              print(f"Tamaño: {os.path.getsize(model_path)} bytes")
+          else:
+              raise FileNotFoundError(
+                  f"No se encontró el modelo: {model_path}"
+              )
+          PY
   # ==========================================
   # JOB 2: VALIDACIÓN DE DOCKER
   # ==========================================
