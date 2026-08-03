@@ -105,23 +105,29 @@ jobs:
       # ==========================================
       # 7. Validar existencia del modelo
       # ==========================================
+   
 
-      - name: Validar existencia del modelo
+      - name: Validar componentes MLOps
         run: |
           python - <<'PY'
           import os
 
-          model_path = "modelo/modelo_prendas.keras"
+          files = [
+              "mlops/register_model.py",
+              "mlops/register_model_registry.py"
+          ]
 
-          if os.path.exists(model_path):
-              print("Modelo encontrado correctamente")
-              print(f"Ruta: {model_path}")
-              print(f"Tamaño: {os.path.getsize(model_path)} bytes")
-          else:
-              raise FileNotFoundError(
-                  f"No se encontró el modelo: {model_path}"
-              )
+          for file in files:
+              if os.path.exists(file):
+                  print(f"OK: {file}")
+              else:
+                  raise FileNotFoundError(
+                      f"No se encontró el archivo MLOps: {file}"
+                  )
+
+          print("Componentes MLOps validados correctamente")
           PY
+     
 
 
       # ==========================================
