@@ -1,0 +1,118 @@
+groups:
+  - name: clasificador-prendas-alerts
+
+    rules:
+
+      # ==========================================
+      # ALERTA 1: DATA DRIFT
+      # ==========================================
+
+      - alert: DataDriftDetected
+
+        expr: model_data_drift_detected == 1
+
+        for: 1m
+
+        labels:
+          severity: critical
+          category: data-quality
+
+        annotations:
+
+          summary: "Data Drift detectado"
+
+          description: "El sistema detectó cambios significativos en la distribución de los datos de entrada."
+
+          runbook: "Evaluar distribución de datos y considerar reentrenamiento del modelo."
+
+
+      # ==========================================
+      # ALERTA 2: DRIFT SCORE ALTO
+      # ==========================================
+
+      - alert: HighDataDriftScore
+
+        expr: model_data_drift_score > 20
+
+        for: 1m
+
+        labels:
+          severity: warning
+          category: data-quality
+
+        annotations:
+
+          summary: "Nivel elevado de Data Drift"
+
+          description: "El porcentaje de cambio en los datos supera el umbral establecido del 20%."
+
+          runbook: "Analizar variables afectadas y validar calidad de datos."
+
+
+      # ==========================================
+      # ALERTA 3: SERVICIO CAÍDO
+      # ==========================================
+
+      - alert: ModelServiceDown
+
+        expr: up == 0
+
+        for: 1m
+
+        labels:
+          severity: critical
+          category: availability
+
+        annotations:
+
+          summary: "Servicio de modelo no disponible"
+
+          description: "Prometheus no puede acceder al servicio monitorizado."
+
+          runbook: "Verificar contenedor, servicio FastAPI y disponibilidad del endpoint."
+
+
+      # ==========================================
+      # ALERTA 4: LATENCIA ALTA
+      # ==========================================
+
+      - alert: HighModelLatency
+
+        expr: model_prediction_latency_seconds > 0.5
+
+        for: 2m
+
+        labels:
+          severity: warning
+          category: performance
+
+        annotations:
+
+          summary: "Latencia elevada del modelo"
+
+          description: "La latencia de inferencia supera el SLO de 500 ms."
+
+          runbook: "Revisar carga del servicio, recursos del contenedor y escalabilidad."
+
+
+      # ==========================================
+      # ALERTA 5: BAJA CONFIANZA
+      # ==========================================
+
+      - alert: LowModelConfidence
+
+        expr: model_prediction_confidence < 0.80
+
+        for: 2m
+
+        labels:
+          severity: warning
+          category: model-performance
+
+        annotations:
+
+          summary: "Baja confianza del modelo"
+
+          description: "La confianza promedio de las predicciones está por debajo del SLO de 80%."
+
+          runbook: "Analizar degradación del modelo y evaluar reentrenamiento."

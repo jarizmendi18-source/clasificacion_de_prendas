@@ -8,7 +8,9 @@ import io
 
 # Crear la aplicación
 app = FastAPI(title="Clasificador de Prendas")
+from prometheus_fastapi_instrumentator import Instrumentator
 
+Instrumentator().instrument(app).expose(app)
 # Permitir peticiones desde el frontend
 app.add_middleware(
     CORSMiddleware,

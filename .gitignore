@@ -1,0 +1,57 @@
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Variables de entorno
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Reportes generados
+data_drift_report.html
+drift_alert.txt
+automated_actions.log
+retraining_request.txt
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Datos grandes
+*.zip
+*.rar
+*.7z
+
+# Dataset completo
+datos/
+dataset/
+datasets/
+
+# Google Drive / Colab
+drive/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# MLflow local
+mlruns/
+mlflow.db
+
+# Modelos grandes
+*.h5
+*.pb
