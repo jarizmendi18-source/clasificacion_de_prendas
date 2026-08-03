@@ -1,0 +1,42 @@
+name: CD - Despliegue Clasificador de Prendas
+
+on:
+  workflow_run:
+    workflows:
+      - "CI - Clasificador de Prendas"
+    types:
+      - completed
+
+jobs:
+
+  deploy:
+
+    name: Despliegue Continuo
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Construir imagen Docker
+        run: |
+          docker build \
+            -t clasificador-prendas:latest .
+
+      - name: Verificar imagen Docker
+        run: |
+          docker images clasificador-prendas
+
+      - name: Simular despliegue
+        run: |
+          echo "===================================="
+          echo "DESPLIEGUE CONTINUO"
+          echo "===================================="
+          echo "Imagen construida correctamente"
+          echo "Aplicación lista para desplegar"
+          echo "Servicio: Clasificador de Prendas"
+          echo "Estado: DEPLOYMENT SUCCESS"
